@@ -8,7 +8,7 @@ This is a public repository for deep learning-based segmentation of 2D materials
 <b>Input</b>: multi-spectral images (2+1 D) and RGB images (2D) \
 <b>Output</b>: multi-class segmentation map of 2D materials \
 <b>Model</b>: The Lightweight 3D U-net\
-<b>Loss function</b>: Dice-coefficient loss the focal Tversky loss\
+<b>Loss function</b>: Dice-coefficient loss or the focal Tversky loss\
 <b>Data augmentation</b>: random rotation, randomly cropping and randomly flipping 
 
 The key architecture is defined in:
