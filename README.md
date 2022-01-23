@@ -21,8 +21,8 @@ where the 3D and 2D features after convolutional layers and 'Squeeze and Excitat
 
 
 ## How to train network？
-<b>Input</b>: There are 6 different wavelengths filters in the laboratory(520nm, 540nm, 56nm, 580nm, 600nm), the data shows below:
-
+<b>Input</b>: There are 6 different wavelengths filters in the laboratory(500nm,520nm, 540nm, 56nm, 580nm, 600nm), the data shows below:
+(500nm will not be used in the further training process, since it's too dark)
 
 First, you will need to prepare your dataset. After the preprocess and screen process of original 1024*768 RGB images acquired from the laboratory, we put all these cutted images (<b>[96, 96, 3]</b> RGB images with 3 channels） of same region in the same folder.
 <img width="240" alt="Screen Shot 2022-01-23 at 13 26 40" src="https://user-images.githubusercontent.com/33370630/150678313-b7130cff-49bd-4525-838a-ee094eeb016d.png">
@@ -36,7 +36,16 @@ After the processing them into multispectral images, To download the dataset and
 
 ## GUI
 After optimized data set and performance of our model, a GUI system is built.
+Run the ```GUI_chr.py```file to start the GUI.
+Or use ```pyinstaller``` to pack it up as executable file.
+
 <img width="1326" alt="Screen Shot 2022-01-23 at 12 10 27" src="https://user-images.githubusercontent.com/33370630/150677708-a1a8797b-502b-4d0a-b229-8cce65333474.png">
+
+Prepare multispectral data for the GUI: ```Load Image``` will load the RGB image, ```Load MS_Image``` will show the images with different wavelengths.
+```Predict``` will predict the flakes.
+
+
+<img width="258" alt="Screen Shot 2022-01-23 at 15 15 55" src="https://user-images.githubusercontent.com/33370630/150682775-4be9fcf8-7815-41f4-9f43-0408188511df.png"><img width="234" alt="Screen Shot 2022-01-23 at 15 16 07" src="https://user-images.githubusercontent.com/33370630/150682783-c029800b-6a5f-4de3-a37b-748b497d50ef.png">
 
 
 
