@@ -2,8 +2,7 @@
 ## Introduction
 
 This is a public repository for deep learning-based accurate segmentation of 2D materials. The networkstructure were mainly developed by Mr. Zhuo Shi and optimized by Mr. Haoran Cheng (Email: haoran.cheng111@gmail.com), and were further polished by Mr. Hongwei Li (Email: hongwei.li@tum.de) and Mr. Xingchen Dong (xingchen.dong@tum.de).
-
-![Uploading Screen Shot 2022-01-23 at 13.57.50.png…]()
+<img width="752" alt="Screen Shot 2022-01-23 at 13 58 33" src="https://user-images.githubusercontent.com/33370630/150679544-cec1f19d-e0ba-4515-b9df-b4bc5140ed16.png">
 
 
 <b>Input</b>: multi-spectral images (2+1 D) and RGB images (2D) \
