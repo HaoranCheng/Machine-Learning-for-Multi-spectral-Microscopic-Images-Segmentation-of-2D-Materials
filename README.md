@@ -18,10 +18,10 @@ model.py
 where the 3D and 2D features after convolutional layers and 'Squeeze and Excitation' blocks are fused into one network and trained in an end-to-end manner. We also provide the codes of different fusion strategies in *model.py* if you wish to compare them. 
 
 ![model](https://user-images.githubusercontent.com/33370630/150677430-8e62eb83-d8c7-486d-b8fa-869474fadced.png)
-<img width="1326" alt="Screen Shot 2022-01-23 at 12 10 27" src="https://user-images.githubusercontent.com/33370630/150677708-a1a8797b-502b-4d0a-b229-8cce65333474.png">
+
 
 How to train model: 
-Input:There are 6 different wavelengths filters in the laboratory, the data shows below:
+Input:There are 6 different wavelengths filters in the laboratory(520nm, 540nm, 56nm, 580nm, 600nm), the data shows below:
 <img width="240" alt="Screen Shot 2022-01-23 at 13 26 40" src="https://user-images.githubusercontent.com/33370630/150678313-b7130cff-49bd-4525-838a-ee094eeb016d.png">
 <img width="265" alt="Screen Shot 2022-01-23 at 13 26 47" src="https://user-images.githubusercontent.com/33370630/150678317-88926546-89dc-4f1b-ae2d-cc7cd68e3b61.png">
 First, after the preprocess and screen process of original 1024*768 RGB images acquired from the laboratory, we put all these cutted images of same region in the same folder.
@@ -31,7 +31,7 @@ Finally: Run predict_withCCA.py to show the prediction of each layer.
 
 ## GUI
 After optimized data set and performance of our model,
-
+<img width="1326" alt="Screen Shot 2022-01-23 at 12 10 27" src="https://user-images.githubusercontent.com/33370630/150677708-a1a8797b-502b-4d0a-b229-8cce65333474.png">
 
 
 ## How to train the network? 
