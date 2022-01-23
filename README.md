@@ -2,10 +2,11 @@
 ## Introduction
 
 This is a public repository for deep learning-based accurate segmentation of 2D materials. The networkstructure were mainly developed by Mr. Zhuo Shi and optimized by Mr. Haoran Cheng (Email: haoran.cheng111@gmail.com), and were further polished by Mr. Hongwei Li (Email: hongwei.li@tum.de) and Mr. Xingchen Dong (xingchen.dong@tum.de).
-<img width="797" alt="Screen Shot 2022-01-23 at 13 54 38" src="https://user-images.githubusercontent.com/33370630/150679356-1e9ae4af-181f-4451-b962-7fde181adfff.png">
+
+![Uploading Screen Shot 2022-01-23 at 13.57.50.png…]()
 
 
-<b>Input</b>: hyperspectral images (2+1 D) and RGB images (2D) \
+<b>Input</b>: multi-spectral images (2+1 D) and RGB images (2D) \
 <b>Output</b>: multi-class segmentation map of 2D materials \
 <b>Model</b>: a two-stream convolutional neural network that fuses the dual-modality information \
 <b>Key components</b>: 3D convolution, 2D convolution, 'Squeeze and Excitation' block \
