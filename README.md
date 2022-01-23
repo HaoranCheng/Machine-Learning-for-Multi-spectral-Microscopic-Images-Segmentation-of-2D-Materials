@@ -1,4 +1,4 @@
-# Machine-Learning-for-Multi-spectral-Microscopy-Images-Segmentation-of-2D-Materials
+# Machine Learning for Multi-spectral Microscopic Images Segmentation of 2D Materials
 ## Introduction
 
 This is a public repository for deep learning-based segmentation of 2D materials. The networkstructure were mainly developed by Mr. Zhuo Shi (ge75cam@mytum.de)and optimized by Mr. Haoran Cheng (Email: haoran.cheng111@gmail.com), and were further polished by Mr. Hongwei Li (Email: hongwei.li@tum.de) and Mr. Xingchen Dong (xingchen.dong@tum.de).
