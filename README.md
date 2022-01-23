@@ -13,7 +13,7 @@ This is a public repository for deep learning-based segmentation of 2D materials
 
 The key architecture is defined in:
 ```
-K_fold_CV.py
+model.py
 ```
 where the 3D and 2D features after convolutional layers and 'Squeeze and Excitation' blocks are fused into one network and trained in an end-to-end manner. We also provide the codes of different fusion strategies in *model.py* if you wish to compare them. 
 
