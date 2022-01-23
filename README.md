@@ -29,7 +29,7 @@ Secondly: Run MSTgray.py to prepare mix all the multispectral images in to one i
 Next: Run the K_fold_CV.py to train these images.
 Finally: Run predict_withCCA.py to show the prediction of each layer.
 
-GUI:
+## GUI
 After optimized data set and performance of our model,
 
 
