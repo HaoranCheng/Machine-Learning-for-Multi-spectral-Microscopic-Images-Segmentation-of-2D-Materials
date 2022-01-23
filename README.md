@@ -25,8 +25,8 @@ where the 3D and 2D features after convolutional layers and 'Squeeze and Excitat
 (500nm will not be used in the further training process, since it's too dark)
 
 First, you will need to prepare your dataset. After the preprocess and screen process of original 1024*768 RGB images acquired from the laboratory, we put all these cutted images (<b>[96, 96, 3]</b> RGB images with 3 channels) of same region in the same folder.
-<img width="240" alt="Screen Shot 2022-01-23 at 13 26 40" src="https://user-images.githubusercontent.com/33370630/150678313-b7130cff-49bd-4525-838a-ee094eeb016d.png">
-<img width="265" alt="Screen Shot 2022-01-23 at 13 26 47" src="https://user-images.githubusercontent.com/33370630/150678317-88926546-89dc-4f1b-ae2d-cc7cd68e3b61.png"><img width="313" alt="Screen Shot 2022-01-23 at 15 24 36" src="https://user-images.githubusercontent.com/33370630/150683177-53f10ae8-c92d-481f-b5cc-655aa5bde655.png">
+
+<img width="240" alt="Screen Shot 2022-01-23 at 13 26 40" src="https://user-images.githubusercontent.com/33370630/150678313-b7130cff-49bd-4525-838a-ee094eeb016d.png"><img width="265" alt="Screen Shot 2022-01-23 at 13 26 47" src="https://user-images.githubusercontent.com/33370630/150678317-88926546-89dc-4f1b-ae2d-cc7cd68e3b61.png"><img width="313" alt="Screen Shot 2022-01-23 at 15 24 36" src="https://user-images.githubusercontent.com/33370630/150683177-53f10ae8-c92d-481f-b5cc-655aa5bde655.png">
 
 
 Secondly: Run ```MSTgray.py``` to prepare and mix all the images with different wavelengths into multispectral image and save the npy file for training process.
