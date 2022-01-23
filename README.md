@@ -34,11 +34,11 @@ Finally: Run ```predict_withCCA.py``` to show the prediction of each layer.
 After optimized data set and performance of our model, a GUI system is built to predict large images(1024*768).
 Run the ```GUI_chr.py```file to start the GUI.
 Or use ```pyinstaller``` to pack it up as executable file.
-
+```Load Image``` will load the RGB image, ```Load MS_Image``` will show the images with different wavelengths.
+```Predict``` will predict the flakes.
 <img width="1326" alt="Screen Shot 2022-01-23 at 12 10 27" src="https://user-images.githubusercontent.com/33370630/150677708-a1a8797b-502b-4d0a-b229-8cce65333474.png">
 
-Prepare multispectral data for the GUI: ```Load Image``` will load the RGB image, ```Load MS_Image``` will show the images with different wavelengths.
-```Predict``` will predict the flakes.
+ 
 
 
 
