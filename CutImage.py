@@ -10,7 +10,7 @@ def img_seg(dir):
         print(a,b)
         img = Image.open(os.path.join(dir + "/" + file))
         hight, width = img.size
-        w = 96*2    #切割成812*812
+        w = 96*2    
         id = 1
         i = 0
         while (i + w <= hight):
@@ -21,10 +21,9 @@ def img_seg(dir):
                 new_img = new_img.resize((96,96), Image.ANTIALIAS)
                 new_img.save(rename + a + "_" + str(id) + b)
                 id += 1
-                j += 50   #滑动步长
+                j += 50   
             i = i + 50
-#find ./ -name ".DS_Store" -depth -exec rm {} \;
 
 if __name__ == '__main__':
     path = "./2"
-    img_seg(os.getcwd()+"/XingchenDong/newregion8")
+    img_seg(os.getcwd()+"/newregion")
