@@ -17,31 +17,21 @@ from skimage import data
 from skimage.morphology import square
 from skimage.filters import rank
 opt= mpimg.imread('newMScrop/Label/2_74.jpg')
-
-#y_true,x_test_DR,都要改，要先数一下，此图片在test集的排序位置，0123，
 from MSToGray import load_MS
-# method = 'PCA'
-# NC= 8# 根据不同的测试数据需要切换相应的模型 D-Unet/Unet
-# #model = D_Unet(5)
-# model = Unet_Shallow(5,NC)
+
 model = Unet_Lightweight(numClass,NC)
 model.load_weights("saved_models/model_" + str(1) + ".h5")
 x_test = np.load('x_val_3DUnet.npy')
 y_true = np.load('y_val_3DUnet.npy')
-#x_test_patch=get_patches(x_test)
-x_test_DR = Perform_DR(method,NC,x_test)
-print(np.shape(x_test_DR))#(23, 96, 96, 5)
+
+
+print(np.shape(x_test))#(23, 96, 96, 5)
 print(np.shape(y_true))#(23, 96, 96, 6)
 
-#pred_test_patch=model.predict(x_test_patch,verbose=1)
-pred_test=model.predict(np.expand_dims(x_test_DR[6],axis=0),verbose=1)
-
-#pred_test_patch=median_f(pred_test_patch,3)
-
-
+pred_test=model.predict(np.expand_dims(x_test[6],axis=0),verbose=1)
 pred_test_t=pred_test.argmax(axis=-1)
 
-# 分别对每一个class的结果做cca_postprocessing,去除杂点
+#do cca_postprocessing to all classes to clear the noise
 pred_0 = np.zeros(np.shape(pred_test_t))
 pred_0[pred_test_t == 0] = 1
 pred_0 = CCA_postprocessing(np.uint8(np.squeeze(pred_0)))
@@ -65,9 +55,6 @@ pred_4 = CCA_postprocessing(np.uint8(np.squeeze(pred_4)))
 pred_5 = np.zeros(np.shape(pred_test_t))
 pred_5[pred_test_t == 5] = 1
 pred_5 = CCA_postprocessing(np.uint8(np.squeeze(pred_5)))
-
-
-
 
 
 plt.figure()
