@@ -337,19 +337,11 @@ def Unet_convLSTM(numClass, NC, filter = [32,64,128]):
 
     return model
 
-#method = 'SVD'
-# method = 'PCA'
-method = 'NoDR'
 NC = 5
-#保留spectral channel的数量
-#model_Name = "2DUnet"
-#model_Name = "Shallow"
 model_Name = "Lightweight"
-#model_Name = "LSTMUnet"
-# model_Name = "Original"
+
 numClass=6
-#model = Unet(numClass,NC)
-#NC = 251#保留spectral channel的数量
+
 
 #model = Unet_3D(numClass,NC)
 #plot_model(model,show_shapes = True,to_file = 'model.png')
