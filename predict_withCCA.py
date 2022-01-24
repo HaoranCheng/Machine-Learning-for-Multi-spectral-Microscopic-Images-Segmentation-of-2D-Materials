@@ -160,15 +160,5 @@ plt.xticks([])
 plt.yticks([])
 ax14.set_title("true-mask",fontsize=8)
 
-# if NC == 251:
-#     plt.savefig('./Quantitive Analysis(Without DR).jpg')
-# else:
-#     plt.savefig('./Quantitive Analysis'+str(NC)+'.jpg')
-if NC == 251:
-   plt.savefig('./Quantitive Analysis(Without DR).jpg')
-else:
-    plt.savefig('./Quantitive Analysis'+str(NC)+'.jpg')
-plt.show()
-
 
 
