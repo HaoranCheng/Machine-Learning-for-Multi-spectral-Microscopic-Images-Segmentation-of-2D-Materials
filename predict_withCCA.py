@@ -11,7 +11,6 @@ from keras import backend as K
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from cca_post import CCA_postprocessing
-from Dimension_reduction import *
 K.set_image_data_format('channels_last')
 from skimage import data
 from skimage.morphology import square
