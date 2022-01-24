@@ -9,7 +9,7 @@ import imgaug as ia
 from PIL import Image, ImageOps
 import tensorflow as tf
 
-# 把图片分割成size大小的patch
+# cut image to patches with same size 
 def get_patches(img_arr, size=48, stride=48):
 
     patches_list = []
@@ -38,7 +38,7 @@ def get_patches(img_arr, size=48, stride=48):
 
     return np.stack(patches_list)
 
-# 把分割后的patch重组成大图
+# reconstruct_from_patches
 def reconstruct_from_patches(img_arr, org_img_size, stride=None, size=None):
     # check parameters
     if type(org_img_size) is not tuple:
@@ -77,18 +77,13 @@ def reconstruct_from_patches(img_arr, org_img_size, stride=None, size=None):
                     j * stride: j * stride + size,
                     layer,
                     ] = img_arr[kk, :, :, layer]
-
                 kk += 1
-
-
         images_list.append(img_bg)
-
     return np.stack(images_list)
 
 
 
-# 把普通的label segmentation转换成onehot-label
-# onehot-label 的channel数对应class的数量
+# turn label segmentation to onehot-label
 def convert_to_onehot(label,numClass):
     one_hot=np.zeros((1,label.shape[0],label.shape[1],numClass),dtype=np.float32)
     for i in range (numClass):
@@ -98,8 +93,6 @@ def convert_to_onehot(label,numClass):
 
 
 
-# 中值滤波模块
-# 对分割patch的预测结果使用中值滤波可消除patch边缘的干扰
 def median_f(img,size):
     for i in range(img.shape[0]):
         for j in range(img.shape[3]):
@@ -107,9 +100,9 @@ def median_f(img,size):
 
     return img
 
-# 对数据做augmentation
-# 所有数据随机旋转aug=3次，旋转角度[0,90]之间
-# 所有数据水平翻转一次
+# augmentation
+# random rotation [0,90] 3times 
+# horizontal flip
 
 def load_data_aug(x_train, y_train,aug=4,channels=8,num_class=3,size=48):
     imgs=[]
