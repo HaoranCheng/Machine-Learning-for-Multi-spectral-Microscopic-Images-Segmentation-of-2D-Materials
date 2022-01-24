@@ -115,7 +115,7 @@ def load_data_aug(x_train, y_train,aug=4,channels=8,num_class=3,size=48):
     imgs=[]
     labels=[]
     num=x_train.shape[0]
-    #num = 1
+    
     for i in range(aug):
         for j in range(num):
             t = np.random.rand() * 90
@@ -137,22 +137,6 @@ def load_data_aug(x_train, y_train,aug=4,channels=8,num_class=3,size=48):
         y_train_flip = flip.augment_image(y_train_tmp2)
         imgs.append(x_train_flip)
         labels.append(y_train_flip)
-    #cutmix
-    # x_train_cutmix, y_train_cutmix = cutmix(x_train[:3],y_train[:3],aug=2)#aug必须小于8
-    # plt.figure
-    # plt.subplot(1,2,1)
-    # plt.imshow(x_train[0])
-    # plt.subplot(1,2,2)
-    # plt.imshow(imgs[0])
-    # #
-    # plt.xticks([])
-    # plt.yticks([])
-    # plt.show()
-    #print(np.shape(x_train_cutmix),np.shape(y_train_cutmix))
-
-    #如果要使用cutmix，使用以下两行
-    # imgs = np.concatenate((imgs,x_train_cutmix),axis = 0)
-    # labels = np.concatenate((labels,y_train_cutmix),axis = 0)
     return np.stack(imgs),np.stack(labels)
 
 
@@ -196,9 +180,8 @@ def cutmix(image, mask, aug, PROBABILITY=1.0):
 
 
 
-# 将binary的mask 转换成rgba的彩图
+#turn binary mask to rgba image
 def mask_to_rgba(mask, color="red"):
-
 
     h = mask.shape[0]
     w = mask.shape[1]
@@ -228,10 +211,3 @@ def mask_to_rgba(mask, color="red"):
         return np.stack((ones/256*254, ones/256*198, ones/256*1, ones), axis=-1)
     elif color == "orange": #5.layer
         return np.stack((ones/256*234, ones/256*115, ones/256*23, ones), axis=-1)
-
-# x_train=np.load('xT_RGB.npy')
-# # # # #x_train_patch=get_patches(x_train)
-# # # #
-# y_train=np.load('yT_RGB.npy')
-# # #
-# x_train_aug,y_train_aug=load_data_aug(x_train,y_train,aug = 1)
