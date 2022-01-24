@@ -10,7 +10,6 @@ def Concat_RGB_MS(MS_data,list):
         img = Image.open(os.path.join(data_path, list[i] + '.png'))
         img = np.asarray(img.convert('RGB'))
         RGB = np.asarray(img)
-        #print("RGB max"+str(np.max(RGB)),"RGB min"+str(np.min(RGB)))
         temp[i] = np.concatenate((RGB, np.squeeze(MS_data[i])), axis=-1)
     return temp
 
@@ -66,10 +65,8 @@ def load_MS():
     # print(temp_path)
     train_list = sorted(os.listdir(temp_path))
     train_list.sort(key=lambda x:(int(x.split('_')[0]),int(x.split('_')[-1])))
-    #修改读取文件错乱的问题
     print(train_list)
     for nn in train_list:
-         #print("当前文件夹"+nn)
          temp_path1 = temp_path + '/' + nn
          img_list = sorted(os.listdir(temp_path1))
          
@@ -80,28 +77,17 @@ def load_MS():
              img = imread(temp_path1 + '/' + file)
              #print(np.shape(np.array(img)))
              img = np.dot(img, [0.299, 0.587, 0.114])
-             #img = Channel_normalization(np.array(img))
              single_train.append(img)
          single_train = np.transpose(single_train,(1,2,0))#1*96*96*5
          X_train.append(single_train)#n*96*96*5
          #print(np.shape(X_train))
          label = np.asarray(Image.open(os.path.join(data_path, 'Label',nn+'_Simple Segmentation.png')))
-
-         #print(np.shape(label))
-         #print(np.shape(label))
          one_hot_label = np.squeeze(convert_to_onehot(label, NUM_class))
          y_train.append(one_hot_label)
     X_train = np.array(X_train)
     X_train = X_train[:,:,:,1:6]
     y_train = np.array(y_train)
     # Light compensation
-    #print(X_train.shape)
-    '''
-    Bg_after = Layer_extraction(X_train[0],y_train[0],0)
-    Bg_before = Layer_extraction(X_train[7],y_train[7],0)
-    X_train[0:6] = X_train[0:6]*Bg_before/Bg_after
-    X_train[-5:] = X_train[-5:] * Bg_before / Bg_after
-    '''
     Bg_after = Layer_extraction(X_train[0],y_train[0],0)
     #Bg_before = Layer_extraction(X_train[68],y_train[68],0)
     Bg_before = Layer_extraction(X_train[-1],y_train[-1],0)
@@ -109,21 +95,15 @@ def load_MS():
     X_train[74:] = X_train[74:] * Bg_before / Bg_after
     
     print(X_train.shape)
-    # X_train[5:8] = X_train[5:8]*Back_ground3/Back_ground4
-
-
-    #print("Label_train"+str(np.shape(y_train)))
     #channel normalization
     max_channel = np.max(np.max(np.max(X_train,axis=0),axis=0),axis=0)
     #print("max_channel"+str(max_channel))
     min_channel = np.min(np.min(np.min(X_train,axis=0),axis=0),axis=0)
-    #print("min channel"+str(min_channel))
-    #X_train = (X_train-min_channel)/(max_channel-min_channel)*255
+
     for i in range(len(X_train)):
         for j in range(X_train.shape[3]):
             X_train[i,:,:,j] = (X_train[i,:,:,j]-min_channel[j])/(max_channel[j]-min_channel[j])*255
-    #X_train = MSInterpolation(X_train)
-    #X_train = Concat_RGB_MS(X_train,train_list)
+
     temp_path = os.path.join(data_path, 'crop','test')
     # print(temp_path)
     test_list = sorted(os.listdir(temp_path))
@@ -136,7 +116,6 @@ def load_MS():
                  #print(file)
                  img = imread(temp_path1+'/'+file)
                  img = np.dot(img, [0.299, 0.587, 0.114])
-                 #img = Channel_normalization(np.array(img))
                  single_train.append(img)
              single_train = np.transpose(single_train,(1,2,0))
              X_val.append(single_train)
@@ -148,14 +127,14 @@ def load_MS():
              one_hot_label = np.squeeze(convert_to_onehot(label, NUM_class))
              #print(none_hot_label[:,:,3]))
              y_val.append(one_hot_label)
-        #删除第一channel，删掉那个较暗的波长
+        #delete first channel，which is too dark
         X_val = np.asarray(X_val)
         X_val = X_val[:,:,:,1:6]
         y_val = np.asarray(y_val)
 
         #light compensation
         X_val[-2:] = X_val[-2:]*Bg_before/Bg_after
-        # X_val[2:4] = X_val[2:4]*Back_ground3/Back_ground4
+       
 
         #channel normalization
         max_channel = np.max(np.max(np.max(X_val,axis=0),axis=0),axis=0)
@@ -163,26 +142,21 @@ def load_MS():
         for i in range(len(X_val)):
             for j in range(X_val.shape[3]):
                 X_val[i, :, :, j] = (X_val[i, :, :, j] - min_channel[j]) / (max_channel[j] - min_channel[j]) * 255
-        #channel Interpolation
-        #X_val = MSInterpolation(X_val)
-        #X_val = Concat_RGB_MS(X_val, val_list)
     return X_train, y_train, X_val, y_val
 
 def main():
-    # train_list = ['1_1', '1_2', '3_1', '3_2', '3_3', '4_1', '4_2', '4_3'] #define the list of training samples
-    #train_list = ['1_1', '1_2']
-    # val_list = ['1_3', '3_4', '4_4','4_5'] #刨除10_2,define the list of validation samples
+  
     X_train,Y_train, X_val, Y_val = load_MS()
     print("Train"+str(np.shape(X_train)))
     print("Train"+str(np.shape(Y_train)))
     print("Val"+str(np.shape(X_val)))
     print("VAl_label"+str(np.shape(Y_val)))
     
-    #np.save('x_train_3DUnet_new.npy', X_train)
-    #np.save('y_train_3DUnet_new.npy', Y_train)
-    #np.save('x_val_3DUnet_new.npy', X_val)
-    #np.save('y_val_3DUnet_new.npy', Y_val)
-    #print(np.min(X_val))
+    np.save('x_train_3DUnet_new.npy', X_train)
+    np.save('y_train_3DUnet_new.npy', Y_train)
+    np.save('x_val_3DUnet_new.npy', X_val)
+    np.save('y_val_3DUnet_new.npy', Y_val)
+
 
 if __name__ == "__main__":
     main()
