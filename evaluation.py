@@ -15,7 +15,6 @@ labels = {0: 'class 0',
           1: 'class 1',
           2: 'class 2',
           3: 'class 3',
-          #跑RGB插值时把class 4 加回来，34层如果
           4: 'class 4',
           5: 'class 5'
           }
@@ -100,21 +99,13 @@ def getDSC(testImage, resultImage):
         testArray = np.array(testArray)
 
         resultArray = np.array(resultArray)
-        #print(np.shape(testArray))
-        # similarity = 1.0 - dissimilarity
-        # scipy.spatial.distance.dice raises a ZeroDivisionError if both arrays contain only zeros.
 
         intersection = np.sum(testArray * resultArray)
-        # print("intersection"+str(2*intersection))
-        # print(np.sum(np.abs(testArray))+np.sum(np.abs(resultArray)))
         if np.sum(testArray) == 0:
             dsc[k] = None
         else:
             dsc[k] = (2. * intersection) / (
                         np.sum(testArray)+np.sum(resultArray))
-        #无需考虑分母为零的情况是因为分母为零必须testArray和resultArray都为零，而testArray为零的情况已经
-        #通过if考虑过了，进入到else就可以保证testArray不为零，也就是说分母不会为0
-    #print("gaga"+str(dsc))
     return dsc
 
 
@@ -196,7 +187,3 @@ def getVS(testImage, resultImage):
             vs[k] = None
 
     return vs
-
-
-#if __name__ == "__main__":
-    #do()
