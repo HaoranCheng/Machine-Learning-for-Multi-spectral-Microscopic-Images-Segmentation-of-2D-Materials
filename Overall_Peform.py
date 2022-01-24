@@ -4,7 +4,6 @@ import SimpleITK as sitk
 import prettytable
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
-from Dimension_reduction import *
 from model import *
 from dataProc import *
 
@@ -12,16 +11,10 @@ K.set_image_data_format('channels_last')
 from evaluation import getDSC, getHausdorff, getVS
 from prettytable import PrettyTable
 from cca_post import CCA_postprocessing
-#from load_data import load_data
 from load_rgb_test import load_RGB_all
 from MSToGray import load_MS
 import numpy as np
 import pandas as pd
-#h95 = get_eval_metrics(true_mask, pred_mask_afterCCA)
-
-#print(row_1)
-
-
 
 def confusion_matrix(y_true, y_pred):
     y_true = np.expand_dims(y_true, axis=0)
@@ -69,11 +62,8 @@ def confusion_matrix(y_true, y_pred):
 def get_eval_metrics(true_mask, pred_mask):
     true_mask_sitk = sitk.GetImageFromArray(true_mask)
     pred_mask_sitk = sitk.GetImageFromArray(pred_mask)
-    #print("Sitk"+str(np.shape(true_mask_sitk)))
     dsc = getDSC(true_mask_sitk, pred_mask_sitk)
-    #print("jaja"+str(np.nan_to_num(dsc)))
     h95 = getHausdorff(true_mask_sitk, pred_mask_sitk)
-    #vs = getVS(true_mask_sitk, pred_mask_sitk)
 
     result = {}
     result['dsc'] = dsc
@@ -81,25 +71,20 @@ def get_eval_metrics(true_mask, pred_mask):
     result['h95'] = h95
     #result['vs'] = vs
 
-    return result #(dsc, h95, vs)
+    return result 
 
 def get_PredOnehot(x_testSample,y_trueSample,model):
     x_testSample = np.expand_dims(x_testSample,axis = 0)
     y_trueSample = np.expand_dims(y_trueSample,axis = 0)
     pred_test = model.predict(x_testSample)
-    #print(np.shape(pred_test))
     #1*96*96*5
     true_mask = y_trueSample.argmax(axis=-1)
-    #print("True mask"+str(np.shape(true_mask)))
     #1*96*96
     pred_test_t = pred_test.argmax(axis=-1)
-
-    # print(np.shape(pred_test_t))
-    # 将预测结果分开进行cca去除杂点
+    # cca processing 
     pred_0 = np.zeros(np.shape(pred_test_t))
     pred_0[pred_test_t == 0] = 1
     pred_0 = CCA_postprocessing(np.uint8(np.squeeze(pred_0)))
-    #print(np.shape(pred_0))
     #96*96
     pred_1 = np.zeros(np.shape(pred_test_t))
     pred_1[pred_test_t == 1] = 1
@@ -108,20 +93,16 @@ def get_PredOnehot(x_testSample,y_trueSample,model):
     pred_2 = np.zeros(np.shape(pred_test_t))
     pred_2[pred_test_t == 2] = 1
     pred_2 = CCA_postprocessing(np.uint8(np.squeeze(pred_2)))
-    #print("2Layer"+str(np.sum(pred_2)))
     pred_3 = np.zeros(np.shape(pred_test_t))
     pred_3[pred_test_t == 3] = 1
     pred_3 = CCA_postprocessing(np.uint8(np.squeeze(pred_3)))
 
     pred_4 = np.zeros(np.shape(pred_test_t))
     pred_4[pred_test_t == 4] = 1
-    # print(np.shape(CCA_postprocessing(np.uint8(np.squeeze(pred_4)))))
     pred_4 = CCA_postprocessing(np.uint8(np.squeeze(pred_4)))
-    #print(np.shape(pred_4))
 
     pred_5 = np.zeros(np.shape(pred_test_t))
     pred_5[pred_test_t == 5] = 1
-    # print(np.shape(CCA_postprocessing(np.uint8(np.squeeze(pred_4)))))
     pred_5 = CCA_postprocessing(np.uint8(np.squeeze(pred_5)))
 
     pred_onehot = np.zeros((1, 96, 96, 6), dtype=np.int8)
@@ -132,10 +113,9 @@ def get_PredOnehot(x_testSample,y_trueSample,model):
     pred_onehot[:, :, :, 4] = pred_4
     pred_onehot[:, :, :, 5] = pred_5
 
-    # 将onehot形式的cca处理结果合并成一个通道的segmentation result
+    #  take the cca result of onehot,and merge them in to one channel segmentation result
     pred_mask_afterCCA = pred_onehot.argmax(axis=-1)
     #1*96*96
-    #print(np.shape(pred_mask_afterCCA))
     result = get_eval_metrics(true_mask, pred_mask_afterCCA)
     return result,pred_onehot
 
@@ -156,7 +136,7 @@ def construct_weights(y_true,Dice_weights):
     Dice_weights.append([true_class_0,true_class_1,true_class_2,true_class_3,true_class_4,true_class_5])
 
 def Display_final_Table(x_test_DR,y_true,model):
-    #预测并计算performance部分
+    #performance
     T_H95 = PrettyTable(["H95", "Background", "1.Layer", "2.Layer", "3.Layer","MultiLayer","Bulk"])
     H95_mat = np.zeros((len(y_true),6))
     T_DSC = PrettyTable(["DSC", "Background", "1.Layer", "2.Layer", "3.Layer","MultiLayer","Bulk"])
@@ -166,14 +146,9 @@ def Display_final_Table(x_test_DR,y_true,model):
     weights = []
 
     for i in range(0,len(y_true)):
-        #print(np.shape(y_true[i]))
-        # print("x形"+str(np.shape(x_test_DR[i])))
-        # print("y形"+str(np.shape(y_true[i])))
         construct_weights(y_true[i],weights)
-        #construct_weights(y_true[i],H95_weights)
         result, pred_onehot =get_PredOnehot(x_test_DR[i],y_true[i],model)
-        #获取dsc和h95
-
+        #get dsc and h95
         row_H = list(result['h95'].values())
         row_D = list(result['dsc'].values())
         H95_mat[i]=row_H
@@ -182,9 +157,9 @@ def Display_final_Table(x_test_DR,y_true,model):
         row_D.insert(0,"Sample"+str(i))
         T_H95.add_row(row_H)
         T_DSC.add_row(row_D)
-        #获取每个样本对应的confusion matrix
+        #get confusion matrix of each sample
         Confusion_mat += confusion_matrix(y_true[i], pred_onehot)
-    #创建Confusion Table
+    #creat Confusion Table
     row_C = list(Confusion_mat[0])
     row_C.insert(0, "Background")
     T_Confusion.add_row(row_C)
@@ -204,9 +179,6 @@ def Display_final_Table(x_test_DR,y_true,model):
     row_C.insert(0, "Bulk")
     T_Confusion.add_row(row_C)
 
-
-
-
     nan_mask = np.isnan(H95_mat)
     H95_mat[nan_mask]= 0
     weights = np.asarray(weights)
@@ -215,10 +187,7 @@ def Display_final_Table(x_test_DR,y_true,model):
     row_Haverage = list(np.sum(weights*H95_mat,axis=0))
     row_Haverage.insert(0, "AverageScore:")
     T_H95.add_row(row_Haverage)
-    #row_Daverage = list(np.nanmean(DSC_mat,axis=0))
-    #row_Daverage.insert(0,"AverageScore:")
 
-    #np.nan_to_num(DSC_mat)
     nan_mask = np.isnan(DSC_mat)
     DSC_mat[nan_mask]= 0
 
@@ -238,22 +207,13 @@ def Display_final_Table(x_test_DR,y_true,model):
     SaveAsTxt("Result/T_DSC.txt", T_DSC, method, model_Name, NC)
     SaveAsTxt("Result/T_Confusion.txt", T_Confusion, method, model_Name, NC)
 
-# NC = 6
-# model_Name = "shallow"
 def main():
-    #参数定义部分
-    # method = 'PCA'
-    #
-    # model = Unet_Shallow(5, NC)
     model = Unet_Lightweight(numClass, NC)
     model.load_weights(str(NC) +'_'+ model_Name + '_' + method + '.h5')
     model.load_weights("saved_models/model_" + str(2) + ".h5")
-    #test_list = ['1_3', '3_4', '4_4','4_5']
     x_test = np.load('x_val_3DUnet.npy')
     y_true = np.load('y_val_3DUnet.npy')
-    #x_test, y_true,_,_ = load_RGB_all(test_list)
-    x_test_DR = Perform_DR(method, NC, x_test)
-    Display_final_Table(x_test_DR,y_true,model)
+    Display_final_Table(x_test,y_true,model)
 if __name__ == "__main__":
     main()
 
